@@ -1,9 +1,10 @@
 import express from "express"
-import mongoose from "mongoose"
 import dotenv from "dotenv"
 import cors from "cors"
-import authRoutes from "./routes/authRoutes.js"
+import authRoutes from "./routes/auth.routes.js"
+import companyRoutes from "./routes/Company.routes.js"
 import { notFound, errorHandler } from "./middleware/errorHandler.js"
+import connectDB from "./utils/db.js"
 
 dotenv.config()
 
@@ -19,6 +20,7 @@ app.use(express.json())
 
 // Routes
 app.use("/api/auth", authRoutes)
+app.use("/api/companies", companyRoutes)
 
 // Test Route
 app.get("/", (req, res) => {
@@ -30,10 +32,7 @@ app.use(notFound)
 app.use(errorHandler)
 
 // MongoDB Connection
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected ✅"))
-  .catch((err) => console.error("MongoDB Error ❌", err))
+connectDB()
 
 // Server Start
 const PORT = process.env.PORT || 5000
