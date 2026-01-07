@@ -1,4 +1,5 @@
 import Company from "../models/Company.model.js";
+import { uploadFileToS3, deleteFileFromS3 } from "../utils/uploadFileToS3.js";
 
 /**
  * CREATE Company
@@ -8,7 +9,15 @@ import Company from "../models/Company.model.js";
 // @access  Private
 const createCompany = async (req, res) => {
   try {
-    const company = await Company.create(req.body);
+    let companyData = { ...req.body };
+    
+    // Handle document upload if present
+    if (req.file) {
+      const documentUrl = await uploadFileToS3(req.file, 'company-documents');
+      companyData.uploadDocument = documentUrl;
+    }
+    
+    const company = await Company.create(companyData);
     res.status(201).json({ success: true, data: company });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
@@ -76,12 +85,31 @@ const getCompanyById = async (req, res) => {
 // @access  Private
 const updateCompany = async (req, res) => {
   try {
-    const company = await Company.findByIdAndUpdate(
+    const company = await Company.findById(req.params.id);
+    if (!company) {
+      return res.status(404).json({ success: false, message: 'Company not found' });
+    }
+    
+    let companyData = { ...req.body };
+    
+    // Handle document upload if present
+    if (req.file) {
+      // If company already has a document, delete the old one from S3
+      if (company.uploadDocument) {
+        await deleteFileFromS3(company.uploadDocument);
+      }
+      
+      const documentUrl = await uploadFileToS3(req.file, 'company-documents');
+      companyData.uploadDocument = documentUrl;
+    }
+    
+    const updatedCompany = await Company.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      companyData,
       { new: true }
     );
-    res.json({ success: true, data: company });
+    
+    res.json({ success: true, data: updatedCompany });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
@@ -95,6 +123,16 @@ const updateCompany = async (req, res) => {
 // @access  Private (Admin only)
 const deleteCompany = async (req, res) => {
   try {
+    const company = await Company.findById(req.params.id);
+    if (!company) {
+      return res.status(404).json({ success: false, message: 'Company not found' });
+    }
+    
+    // If company has a document, delete it from S3
+    if (company.uploadDocument) {
+      await deleteFileFromS3(company.uploadDocument);
+    }
+    
     await Company.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: "Company deleted" });
   } catch (error) {

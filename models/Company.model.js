@@ -34,6 +34,9 @@ const CompanySchema = new mongoose.Schema(
       enum: ["New", "Contacted", "Responded", "Shortlisted"],
       default: "New",
     },
+
+    // Company document field
+    uploadDocument: { type: String }, // URL to company document file in S3
   },
   { timestamps: true }
 );
