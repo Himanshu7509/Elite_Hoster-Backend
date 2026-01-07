@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import cors from "cors"
 import authRoutes from "./routes/auth.routes.js"
 import companyRoutes from "./routes/Company.routes.js"
+import userRoutes from "./routes/User.routes.js"
 import { notFound, errorHandler } from "./middleware/errorHandler.js"
 import connectDB from "./utils/db.js"
 
@@ -21,6 +22,7 @@ app.use(express.json())
 // Routes
 app.use("/api/auth", authRoutes)
 app.use("/api/companies", companyRoutes)
+app.use("/api/users", userRoutes)
 
 // Test Route
 app.get("/", (req, res) => {

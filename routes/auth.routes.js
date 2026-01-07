@@ -10,7 +10,7 @@ import { protect, adminProtect } from '../middleware/auth.js';
 const router = express.Router();
 
 // Employee routes
-router.route('/register').post(registerEmployee);
+router.route('/register').post(adminProtect, registerEmployee);
 router.route('/login').post(loginUser);
 
 // Admin routes
