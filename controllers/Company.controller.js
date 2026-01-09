@@ -9,7 +9,10 @@ import { uploadFileToS3, deleteFileFromS3 } from "../utils/uploadFileToS3.js";
 // @access  Private
 const createCompany = async (req, res) => {
   try {
-    let companyData = { ...req.body };
+    let companyData = { 
+      ...req.body,
+      createdBy: req.user._id  // Set the user who created this company
+    };
     
     // Handle document upload if present
     if (req.file) {
@@ -34,7 +37,11 @@ const getCompanies = async (req, res) => {
   try {
     const { search, status, sort } = req.query;
 
+    // Check if user is admin - if not, only show companies created by this user
     let query = {};
+    if (req.user.role !== 'admin') {
+      query.createdBy = req.user._id;  // Only show companies created by this user
+    }
 
     if (search) {
       query.companyName = { $regex: search, $options: "i" };
@@ -44,7 +51,8 @@ const getCompanies = async (req, res) => {
       query.status = status;
     }
 
-    let companies = Company.find(query);
+    // Populate the createdBy field to show employee name
+    let companies = Company.find(query).populate('createdBy', 'name email');
 
     if (sort === "name") {
       companies = companies.sort({ companyName: 1 });
@@ -67,7 +75,7 @@ const getCompanies = async (req, res) => {
 // @access  Private
 const getCompanyById = async (req, res) => {
   try {
-    const company = await Company.findById(req.params.id);
+    const company = await Company.findById(req.params.id).populate('createdBy', 'name email');
     if (!company)
       return res.status(404).json({ message: "Company not found" });
 

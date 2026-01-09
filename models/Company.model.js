@@ -71,6 +71,13 @@ const CompanySchema = new mongoose.Schema(
     
     // Company document field
     uploadDocument: { type: String }, // URL to company document file in S3
+    
+    // Reference to the user who created this company
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   { timestamps: true }
 );
