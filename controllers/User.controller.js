@@ -6,7 +6,7 @@ import User from "../models/User.model.js";
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find({
-      role: { $in: ['employee', 'developer'] }  // Only get employees, not developers
+      role: { $in: ['employee', 'developer'] }  // Get employees and developers
     }).select('-password');
     res.json({ success: true, data: users });
   } catch (error) {
