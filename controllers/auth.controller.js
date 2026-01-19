@@ -6,12 +6,18 @@ import asyncHandler from 'express-async-handler';
 // @route   POST /api/auth/register
 // @access  Public
 const registerEmployee = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role = 'employee' } = req.body;
 
   // Validation
   if (!name || !email || !password) {
     res.status(400);
     throw new Error('Please provide name, email and password');
+  }
+
+  // Validate role
+  if (!['employee', 'developer'].includes(role)) {
+    res.status(400);
+    throw new Error('Invalid role. Must be employee or developer');
   }
 
   // Check if user already exists
@@ -27,7 +33,7 @@ const registerEmployee = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-    role: 'employee' // Employees will always have 'employee' role
+    role  // Use provided role (employee or developer)
   });
 
   if (user) {
