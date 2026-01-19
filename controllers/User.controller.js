@@ -5,7 +5,9 @@ import User from "../models/User.model.js";
 // @access  Private (Admin only)
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find({ role: 'employee' }).select('-password');
+    const users = await User.find({
+      role: { $in: ['employee', 'developer'] }  // Only get employees, not developers
+    }).select('-password');
     res.json({ success: true, data: users });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
