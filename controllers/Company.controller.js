@@ -37,9 +37,9 @@ const getCompanies = async (req, res) => {
   try {
     const { search, status, sort } = req.query;
 
-    // Check if user is admin - if not, only show companies created by this user
+    // Check if user is admin or developer - if not, only show companies created by this user
     let query = {};
-    if (req.user.role !== 'admin') {
+    if (req.user.role !== 'admin' && req.user.role !== 'developer') {
       query.createdBy = req.user._id;  // Only show companies created by this user
     }
 
