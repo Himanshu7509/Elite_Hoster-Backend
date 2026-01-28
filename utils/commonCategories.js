@@ -1,0 +1,48 @@
+// Common categories for company categorization
+// Used for dropdown suggestions in the frontend
+
+export const commonCategories = [
+  'IT', 
+  'Technology', 
+  'Software', 
+  'Hardware', 
+  'Finance', 
+  'Banking',
+  'Healthcare', 
+  'Education', 
+  'E-commerce', 
+  'Retail', 
+  'Manufacturing',
+  'Consulting', 
+  'Media', 
+  'Entertainment', 
+  'Telecommunications',
+  'Automotive', 
+  'Real Estate', 
+  'Travel', 
+  'Food', 
+  'Energy', 
+  'Government',
+  'Pharmaceuticals',
+  'Insurance',
+  'Logistics',
+  'Agriculture',
+  'Fashion',
+  'Beauty',
+  'Fitness',
+  'Sports',
+  'Art',
+  'Design',
+  'Marketing',
+  'HR',
+  'Legal',
+  'Non-profit',
+  'Startups',
+  'AI/Machine Learning',
+  'Cybersecurity',
+  'Cloud Services',
+  'Blockchain',
+  'Gaming'
+];
+
+export default commonCategories;

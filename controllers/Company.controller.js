@@ -1,5 +1,6 @@
 import Company from "../models/Company.model.js";
 import { uploadFileToS3, deleteFileFromS3 } from "../utils/uploadFileToS3.js";
+import commonCategories from "../utils/commonCategories.js";
 
 /**
  * CREATE Company
@@ -170,11 +171,26 @@ const getCompanyStats = async (req, res) => {
   }
 };
 
+/**
+ * GET Common Categories for Dropdown
+ */
+// @desc    Get common categories for dropdown
+// @route   GET /api/companies/categories
+// @access  Private
+const getCommonCategories = async (req, res) => {
+  try {
+    res.json({ success: true, data: commonCategories });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 export default {
   createCompany,
   getCompanies,
   getCompanyById,
   updateCompany,
   deleteCompany,
-  getCompanyStats
+  getCompanyStats,
+  getCommonCategories
 };

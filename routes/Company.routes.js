@@ -11,6 +11,8 @@ router.route("/")
 
 router.get("/stats", protect, controller.getCompanyStats);
 
+router.get("/categories", protect, controller.getCommonCategories);
+
 router.route("/:id")
   .get(protect, controller.getCompanyById)
   .put(protect, upload.single('uploadDocument'), controller.updateCompany)

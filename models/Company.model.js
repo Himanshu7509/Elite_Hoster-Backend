@@ -29,6 +29,11 @@ const CompanySchema = new mongoose.Schema(
       default: [],
     },
 
+    categories: {
+      type: [String], // Common: IT, Finance, Healthcare, Education, E-commerce, etc. Also accepts custom categories.
+      default: [],
+    },
+
     status: {
       type: String,
       enum: ["New", "Contacted", "Responded", "Shortlisted"],

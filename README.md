@@ -60,6 +60,7 @@ This is the backend for the Elite Hoster application with authentication system 
 - `PUT /api/companies/:id` - Update a company by ID (requires authentication)
 - `DELETE /api/companies/:id` - Delete a company by ID (admin only)
 - `GET /api/companies/stats` - Get company statistics (requires authentication)
+- `GET /api/companies/categories` - Get common categories for dropdown (requires authentication)
 
 ### Email Service
 
@@ -77,6 +78,7 @@ Request (form-data):
   "companyEmail": "contact@testcompany.com",
   "industry": "Technology",
   "tags": "React,Node,AWS",
+  "categories": ["IT", "Software"],
   "status": "New",
   "uploadDocument": [file upload - PDF only]
 }
@@ -93,11 +95,69 @@ Response:
     "companyEmail": "contact@testcompany.com",
     "industry": "Technology",
     "tags": ["React,Node,AWS"],
+    "categories": ["IT", "Software"],
     "status": "New",
     "uploadDocument": "https://s3.amazonaws.com/bucket/document.pdf",
     "createdAt": "timestamp",
     "updatedAt": "timestamp"
   }
+}
+```
+
+### Get Common Categories for Dropdown
+Request:
+```json
+GET /api/companies/categories
+Authorization: Bearer <token>
+```
+
+Response:
+```json
+{
+  "success": true,
+  "data": [
+    "IT",
+    "Technology",
+    "Software",
+    "Hardware",
+    "Finance",
+    "Banking",
+    "Healthcare",
+    "Education",
+    "E-commerce",
+    "Retail",
+    "Manufacturing",
+    "Consulting",
+    "Media",
+    "Entertainment",
+    "Telecommunications",
+    "Automotive",
+    "Real Estate",
+    "Travel",
+    "Food",
+    "Energy",
+    "Government",
+    "Pharmaceuticals",
+    "Insurance",
+    "Logistics",
+    "Agriculture",
+    "Fashion",
+    "Beauty",
+    "Fitness",
+    "Sports",
+    "Art",
+    "Design",
+    "Marketing",
+    "HR",
+    "Legal",
+    "Non-profit",
+    "Startups",
+    "AI/Machine Learning",
+    "Cybersecurity",
+    "Cloud Services",
+    "Blockchain",
+    "Gaming"
+  ]
 }
 ```
 
